@@ -6,7 +6,7 @@
      - CredentialNFT
      - DIDRegistry
      - VerificationOracle
-     - Rust-based CredentialVerifier
+
 3. JavaScript Modules
      - callContractFunction.js
      -  interact.js
@@ -15,8 +15,8 @@
 6. Usage Instructions
 7. Cross-Chain Verification Process
 8. Testing the System
-9. Future Development and Improvements
-10. License
+9. License
+
 
 1. **Overview**
 This project is a decentralized identity verification system focused on issuing, managing, and verifying identity credentials using NFTs and cross-chain messaging. It leverages Solidity for core contract logic, Rust for performance-critical verification functions through Arbitrum Stylus, and Chainlink for oracle services to verify identity credentials across multiple chains.
