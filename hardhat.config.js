@@ -1,16 +1,24 @@
+require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-ethers");
-require('@nomicfoundation/hardhat-toolbox');
 require("dotenv").config();
 
-const { RPC_URL, PRIVATE_KEY } = process.env
+// require("hardhat-arbitrum");
+
+const { ARBITRUM_URL, PRIVATE_KEY } = process.env
+
 
 module.exports = {
   solidity: "0.8.1",
   networks: {
     arbitrumSepolia: {
-      url: process.env.ARBITRIUM_URL,
+      url: process.env.ARBITRUM_URL,
       chainId: 421614,
       accounts: [process.env.PRIVATE_KEY],
-    },
+   },
+   arbitrumStylus: {
+    url: "https://sepolia-rollup.arbitrum.io/rpc",
+    accounts: [process.env.PRIVATE_KEY],
   },
-} 
+ },
+}
+

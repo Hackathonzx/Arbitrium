@@ -1,15 +1,6 @@
 {
-  "name": "arbitrium",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-"devDependencies": {
+  "name": "hardhat-project",
+  "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.7",
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-ignition": "^0.15.5",
@@ -31,8 +22,10 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@arbitrum/sdk": "^4.0.1",
     "@chainlink/contracts": "^1.2.0",
     "@chainlink/contracts-ccip": "^1.4.0",
+    "@wasmer/wasm-transformer": "^0.12.0",
     "dotenv": "^16.4.5"
   }
 }

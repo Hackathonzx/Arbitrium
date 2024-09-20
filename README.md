@@ -1,96 +1,74 @@
-# Project Name: IDSafe
-# Overview
-IDSafe is a blockchain-based identity verification system designed for refugees. It uses decentralized identifiers (DIDs) and Chainlink's Cross-Chain Interoperability Protocol (CCIP) to manage identity verification across different blockchains. The system ensures that refugees can access essential services like healthcare, education, and financial assistance through verified digital credentials.
+**RefugeID**
 
-# Features
-- Decentralized Identity Management: Each refugee is assigned a unique Decentralized Identifier (DID) to manage their identity securely.
-- Cross-Chain Interoperability: Integration with Chainlink CCIP allows for seamless identity verification across multiple blockchain networks.
-- Credential Issuance and Verification: Refugees receive verifiable credentials as NFTs or tokens, which can be used to prove their identity.
-- Event Emission: The system emits events for credential issuance and cross-chain verification, ensuring transparency and traceability.
+# Table of Contents:
+1. Overview
+2. Smart Contracts
+     - CredentialNFT
+     - DIDRegistry
+     - VerificationOracle
+     - Rust-based CredentialVerifier
+3. JavaScript Modules
+     - callContractFunction.js
+     -  interact.js
+4. SDK Integration
+5. Setting Up the Project
+6. Usage Instructions
+7. Cross-Chain Verification Process
+8. Testing the System
+9. Future Development and Improvements
+10. License
 
-# How Chainlink is Used in the Project:
-In this project, Chainlink's Cross-Chain Interoperability Protocol (CCIP) is used to enable cross-chain identity verification. Specifically, Chainlink CCIP ensures that identity verification can occur across different blockchains, making the credential verification system interoperable. This is done by:
-- Emitting a cross-chain verification event that signals the credential needs to be verified on a specific chain (e.g., Avalanche).
-- Utilizing Chainlink's oracles to send verification requests and process responses between multiple blockchains securely.
+1. **Overview**
+This project is a decentralized identity verification system focused on issuing, managing, and verifying identity credentials using NFTs and cross-chain messaging. It leverages Solidity for core contract logic, Rust for performance-critical verification functions through Arbitrum Stylus, and Chainlink for oracle services to verify identity credentials across multiple chains.
 
-# Architecture
-# Smart Contracts:
-- DIDRegistry.sol: Manages the registration and retrieval of DIDs.
-- VerificationOracle.sol: Handles cross-chain verification requests using Chainlink CCIP.
-- CredentialNFT.sol: Issues and manages credentials as ERC721 NFTs.
-
-# Deployment
-Network: IntersectTestnet, Intersect network on Avalanche.
-
-# Contract Addresses:
-- DIDRegistry: [0x41CD3d7753eeAD4c2d384a6C0074eA4c27dE36F1]
-- VerificationOracle: [0xf1979Ac32D086D1f3f3773fe0828d37729ed545f]
-- CredentialNFT: [0x1d8c981FD95060A45b3Cea346DbF7b5b48f5CD36]
-
-# Setup and Installation
-Clone the Repository:  git clone https://github.com/yourusername/idsafe.git
-cd <project-repo-directory>
-
-# Dependencies and Installation
-# Dependencies:
-Solidity Version: ^0.8.0
-OpenZeppelin Contracts:
-@openzeppelin/contracts/token/ERC721/ERC721.sol
-@openzeppelin/contracts/access/Ownable.sol
-@openzeppelin/contracts/utils/Counters.sol
-Hardhat: For local development and testing
-npm install --save-dev hardhat
-Chai: Assertion library for testing
-npm install chai
-Ethers.js: For interacting with Ethereum
-npm install ethers
-Chainlink:
-npm install @chainlink/contracts: For utilizing Chainlink CCIP for cross-chain interoperability.
-Chainlink CCIP (Cross-Chain Interoperability Protocol) for cross-chain data transmission.
-npm install @chainlink/ccip
-
-# Installation:
-- Install the dependencies: npm install
-- Compile the smart contracts: npx hardhat compile
-- Run tests: npx hardhat test
-- Deploy the contract: npx hardhat run ignition/modules/deploy.js --network <network-name>
-
-# Usage
-- Issuing Credentials:
-Call issueCredentialWithMetadata(to: address, metadata: string) on the CredentialNFT contract.
-
-- Verifying Credentials:
-Use getCredentialMetadata(tokenId: uint256) to retrieve metadata.
-
-- Cross-Chain Verification:
-Call emitCrossChainVerificationEvent(tokenId: uint256, chain: string) to emit verification events.
-
-# Testing
-- Test Framework: Hardhat
-- Tests: [Test files]
-- test/CredentialNFT.test.js: Tests for the CredentialNFT contract.
-- test/DIDRegistry.test.js: Tests for the DIDRegistry contract.
-- test/VerificationOracle.test.js: Tests for the VerificationOracle contract.
-
-# Contributing
-- Fork the Repository:
-- Create a New Branch:
-git checkout -b feature/your-feature
-- Make Changes and Commit:
-git add .
-git commit -m "Add feature"
-Push Changes:
-git push origin feature/your-feature
-
-# License
-[MIT License]
-
-# Acknowledgments
-futhmah456@gmail.com
-nathfavour02@gmail.com
+2. # **Smart Contracts**
+    a. CredentialNFT.sol: This contract issues NFTs as identity credentials. Each credential contains metadata specific to the user, such as name, and issue date. It also emits cross-chain verification events when credentials are verified on other chains.
+- Key functions:
+    - issueCredentialWithMetadata: Issues NFT credentials with metadata.
+    - emitCrossChainVerificationEvent: Emits an event when identity is verified across chains.
+    - burnCredential: Allows the credential owner to burn their credential.
+    b. DIDRegistry.sol: A Decentralized Identifier (DID) registry allowing users to register their DIDs and retrieve DID metadata. The contract maps user addresses to DIDs and stores relevant information.
+- Key functions:
+    - registerDID: Registers a new DID for the user.
+    - getDID: Retrieves the details of a registered DID.
+    c. VerificationOracle.sol: This contract is designed to interact with Chainlink to perform cross-chain identity verification. It allows for mock and live requests using Chainlink’s CCIP.
+- Key functions:
+    - requestCrossChainIdentityVerification: Requests identity verification using Chainlink.
+    - fulfill: Handles fulfillment from Chainlink oracle data.
 
 
+3. **JavaScript Modules**
+    - a. callContractFunction.js: This module interacts with the CredentialNFT contract to issue credentials. It uses ethers.js to call functions on the deployed contract.
+- Key function: callFunction: Issues a credential NFT to a recipient with metadata.
+    - b. interact.js: This script bridges tokens between Sepolia (L1) and Arbitrum Sepolia (L2) using the Arbitrum SDK and ethers.js. It deposits ETH from L1 to L2.
+- Key function:: bridgeTokens: Bridges ETH from Sepolia to Arbitrum Sepolia.
 
+4. **Arbitrum SDK Integration**
+The Arbitrum SDK facilitates seamless bridging and interaction with contracts on the Arbitrum Layer 2 network.
 
+5. **Setting Up the Project**
+- Clone the repository.
+- Install the required dependencies:
+   - npm install
+- Compile the Solidity contracts:
+   - npx hardhat compile
+- Set up your .env file with the following keys:
+    - PRIVATE_KEY
+    - ALCHEMY_API_KEY (or another RPC provider)
 
+6. **Usage Instructions**
+- To issue a credential NFT:
+    - node ignition/modules/callContractFunction.js
+- To bridge ETH to Arbitrum Sepolia:
+    - node ignition/modules/interact.js
 
+7. **Cross-Chain Verification Process**
+- Credential NFTs are issued on-chain via the CredentialNFT contract.
+- Cross-chain verification requests are handled via the VerificationOracle contract, utilizing Chainlink for secure data transfer.
+
+8. **Testing the System**
+- Unit tests can be written in the test/ folder for each contract.
+- Scripts in callContractFunction.js and interact.js can be executed to test functionality.
+
+9. **License**
+This project is licensed under the MIT License.
