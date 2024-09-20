@@ -22,11 +22,10 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@arbitrum/sdk": "^2.0.0",
+    "@arbitrum/sdk": "^4.0.1",
     "@chainlink/contracts": "^1.2.0",
     "@chainlink/contracts-ccip": "^1.4.0",
     "@wasmer/wasm-transformer": "^0.12.0",
-    "dotenv": "^16.4.5",
-    "hardhat-arbitrum": "^0.0.2"
+    "dotenv": "^16.4.5"
   }
 }

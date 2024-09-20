@@ -1,22 +1,37 @@
-const ethers = require('ethers');
-const { Bridge } = require('@arbitrum/sdk');
+const { ethers } = require("ethers");
+const { EthBridger } = require("@arbitrum/sdk"); // Removed getL2Network
+require('dotenv').config();
 
-// Setup the L1 and L2 providers
-const l1Provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_KEY');
-const l2Provider = new ethers.providers.JsonRpcProvider('https://arb1.arbitrum.io/rpc');
+console.log("PRIVATE_KEY loaded:", !!process.env.PRIVATE_KEY);
 
-// Use your wallet private key
-const walletL1 = new ethers.Wallet(process.env.PRIVATE_KEY, l1Provider);
-const walletL2 = new ethers.Wallet(process.env.PRIVATE_KEY, l2Provider);
-
-// Function to bridge tokens from L1 to L2
 async function bridgeTokens() {
-    const bridge = new Bridge(walletL1, walletL2);
-    await bridge.deposit({
-        amount: ethers.utils.parseEther('1.0'), // amount to deposit
-        recipient: walletL2.address,
+    const l1Provider = new ethers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/3cM-YKQgVGyQly4GOM1MWzdx4S2vMaQQ');
+    const l2Provider = new ethers.JsonRpcProvider('https://arb-sepolia.g.alchemy.com/v2/3cM-YKQgVGyQly4GOM1MWzdx4S2vMaQQ');
+
+    const l1Signer = new ethers.Wallet(process.env.PRIVATE_KEY, l1Provider);
+    const l2Signer = new ethers.Wallet(process.env.PRIVATE_KEY, l2Provider);
+
+    // Define L2 Network manually
+    const l2Network = {
+        chainID: 421613, // Arbitrum Sepolia Chain ID
+        l1ChainID: 11155111, // Sepolia L1 Chain ID
+        name: "Arbitrum Sepolia",
+        explorerUrl: "https://sepolia-explorer.arbitrum.io"
+    };
+
+    // Create an EthBridger instance
+    const ethBridger = new EthBridger(l2Network);
+
+    // Deposit Ether
+    const depositTx = await ethBridger.deposit({
+        amount: ethers.parseEther('0.01'), // amount to deposit
+        l1Signer: l1Signer,
     });
-    console.log(`Tokens bridged to ${walletL2.address}`);
+
+    console.log(`Deposit transaction hash: ${depositTx.hash}`);
+    await depositTx.wait();
+
+    console.log(`Tokens bridged to ${l2Signer.address}`);
 }
 
 bridgeTokens().catch(console.error);

@@ -1,25 +1,27 @@
 const { ethers } = require('hardhat');
-const contractABI = require('./artifacts/contracts/CredentialNFT.sol/CredentialNFT.json').abi; // Adjust path if necessary
+const contractABI = require('../../artifacts/contracts/CredentialNFT.sol/CredentialNFT.json').abi; // Adjust path if necessary
 
 async function callFunction() {
-    // Set up the provider for the Arbitrum Sepolia testnet
-    const provider = new ethers.providers.JsonRpcProvider('https://sepolia-rollup.arbitrum.io/rpc'); 
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    // Hardhat provides a pre-configured ethers instance, so no need to manually create a provider.
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, ethers.provider); // Connect wallet to Hardhat's provider
     
     // Replace with your actual contract address
-    const contractAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'; 
+    const contractAddress = '0x069F92465a8795a06A28B1e85f320D57CE29Bc8F';
 
     // Create a contract instance
     const contract = new ethers.Contract(contractAddress, contractABI, wallet);
 
     // Example of calling `issueCredentialWithMetadata`
-    const recipientAddress = "0xRecipientAddress"; // Replace with the actual recipient address
-    const metadata = "Metadata here"; // Replace with your metadata
+    const recipientAddress = "0x1234567890abcdef1234567890abcdef12345678"; // Replace with the actual recipient address
+    const metadata = JSON.stringify({
+        name: "Credential for John Doe",
+        issuedAt: new Date().toISOString(),
+    });
 
     try {
         const tx = await contract.issueCredentialWithMetadata(recipientAddress, metadata);
         console.log('Transaction Hash:', tx.hash);
-        
+
         // Wait for the transaction to be confirmed
         await tx.wait();
         console.log('Transaction confirmed!');

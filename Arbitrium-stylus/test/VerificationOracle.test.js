@@ -1,8 +1,8 @@
 const { ethers } = require("hardhat");
 const { expect } = require("chai");
 
-const chainlinkCCIPRouterAddress = "0xF694E193200268f9a4868e4Aa017A0118C9a8177";
-const linkTokenAddress = "0x514910771AF9Ca656af840dff83E8264EcF986CA";
+const chainlinkCCIPRouterAddress = "0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165";
+const linkTokenAddress = "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E";
 
 describe("VerificationOracle", function () {
   let verificationOracle;
